@@ -21,9 +21,12 @@ def Newton_Raphson(poly, start, end, eps, iterations = 1):
     #stub
     return
 
-def Secant_Method(poly, start, end, eps, iterations = 1):
-    #stub
-    return
+def Secant_Method(poly, cur, prev, eps, iterations = 1):
+    nex=cur - polynomial(poly, cur) * ((prev-cur)/(polynomial(poly, prev) - polynomial(poly, cur)))
+    if (abs(polynomial(poly, nex)) < eps):
+        print("Calculation took", iterations, "iterations")
+        return nex
+    return Secant_Method(poly, nex, cur, eps, iterations+1)
 
 
 
