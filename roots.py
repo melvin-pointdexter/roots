@@ -4,8 +4,12 @@
 def polynomial(poly,val):
     su=0
     for power,comp in enumerate(poly):
-        su += comp*(val**(len(poly)-1-power))
+        su += comp*(val**(power))
     return su
+
+def derivitive(poly, val):
+    deriv=[poly[i] * i for i in range(1, len(poly))]
+    return polynomial(deriv, val)
 
 #Functions
 def Bisection_Method(poly, start, end, eps, iterations = 1):
@@ -17,9 +21,12 @@ def Bisection_Method(poly, start, end, eps, iterations = 1):
         return Bisection_Method(poly, start, mid, eps, iterations + 1)
     return Bisection_Method(poly, mid, end, eps, iterations + 1)
 
-def Newton_Raphson(poly, start, end, eps, iterations = 1):
-    #stub
-    return
+def Newton_Raphson(poly, cur, useless, eps, iterations = 1):
+    nex=cur-(polynomial(poly,cur)/derivitive(poly,cur))
+    if (abs(polynomial(poly, nex)) < eps):
+        print("Calculation took", iterations, "iterations")
+        return nex
+    return Newton_Raphson(poly, nex, useless, eps, iterations+1)
 
 def Secant_Method(poly, cur, prev, eps, iterations = 1):
     nex=cur - polynomial(poly, cur) * ((prev-cur)/(polynomial(poly, prev) - polynomial(poly, cur)))
@@ -32,7 +39,7 @@ def Secant_Method(poly, cur, prev, eps, iterations = 1):
 
 #Main Function
 def main():
-    poly=[1,0,-3]
+    poly=[-3,0,1]
     start, end = 1,2
     eps = 0.00001
     methods = { "1" : Bisection_Method, "2": Newton_Raphson, "3": Secant_Method}
